@@ -1,25 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, AlertCircle } from "lucide-react";
 import SectionWrapper from "@/components/layout/SectionWrapper";
+import { submitContactForm } from "@/app/actions/contact";
 
 export default function ContactCTA() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    message: "",
-  });
-  const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("loading");
-    // TODO: Submit to Supabase contact_leads table
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setStatus("success");
-    setFormData({ name: "", email: "", company: "", message: "" });
+    setErrorMessage("");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const result = await submitContactForm(formData);
+      if (result.success) {
+        setStatus("success");
+        form.reset();
+      } else {
+        setStatus("error");
+        setErrorMessage(result.error || "Something went wrong. Please try again.");
+        setTimeout(() => setStatus("idle"), 5000);
+      }
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please try again.");
+      setTimeout(() => setStatus("idle"), 5000);
+    }
   };
 
   return (
@@ -67,6 +79,12 @@ export default function ContactCTA() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
+                  {status === "error" && errorMessage && (
+                    <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                      <AlertCircle className="h-4 w-4 shrink-0" />
+                      {errorMessage}
+                    </div>
+                  )}
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="contact-name" className="mb-1.5 block text-sm font-medium text-brand-gray-700">
@@ -74,10 +92,9 @@ export default function ContactCTA() {
                       </label>
                       <input
                         id="contact-name"
+                        name="name"
                         type="text"
                         required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         className="h-11 w-full rounded-lg border border-border bg-brand-off-white px-4 text-sm focus:border-brand-electric focus:outline-none focus:ring-2 focus:ring-brand-electric/20"
                         placeholder="John Doe"
                       />
@@ -88,10 +105,9 @@ export default function ContactCTA() {
                       </label>
                       <input
                         id="contact-email"
+                        name="email"
                         type="email"
                         required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="h-11 w-full rounded-lg border border-border bg-brand-off-white px-4 text-sm focus:border-brand-electric focus:outline-none focus:ring-2 focus:ring-brand-electric/20"
                         placeholder="john@company.com"
                       />
@@ -103,9 +119,8 @@ export default function ContactCTA() {
                     </label>
                     <input
                       id="contact-company"
+                      name="company"
                       type="text"
-                      value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       className="h-11 w-full rounded-lg border border-border bg-brand-off-white px-4 text-sm focus:border-brand-electric focus:outline-none focus:ring-2 focus:ring-brand-electric/20"
                       placeholder="Company name"
                     />
@@ -116,10 +131,9 @@ export default function ContactCTA() {
                     </label>
                     <textarea
                       id="contact-message"
+                      name="message"
                       rows={4}
                       required
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       className="w-full rounded-lg border border-border bg-brand-off-white px-4 py-3 text-sm resize-none focus:border-brand-electric focus:outline-none focus:ring-2 focus:ring-brand-electric/20"
                       placeholder="Tell us about your project..."
                     />
