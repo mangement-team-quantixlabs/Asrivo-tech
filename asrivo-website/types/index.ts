@@ -1,6 +1,7 @@
 // ============================================
 // ASCIRVO TypeScript Types
 // ============================================
+// Last updated: migration 006_schema_enhancements
 
 // Database record types (matches Supabase schema)
 
@@ -13,7 +14,12 @@ export interface ContactLead {
   country?: string;
   service_interest?: string;
   message?: string;
+  lead_notes?: string;
   status: "new" | "read" | "contacted" | "closed";
+  // Marketing attribution (migration 006)
+  referrer_url?: string;
+  utm_source?: string;
+  utm_campaign?: string;
   created_at: string;
 }
 
@@ -28,11 +34,16 @@ export interface BlogPost {
   author_name?: string;
   author_avatar_url?: string;
   cover_image_url?: string;
+  featured_image_alt?: string;
   read_time_minutes?: number;
   is_published: boolean;
   published_at?: string;
   created_at: string;
   updated_at: string;
+  // Analytics & SEO (migration 006)
+  view_count: number;
+  featured: boolean;
+  meta_description?: string;
 }
 
 export interface CaseStudy {
@@ -51,6 +62,8 @@ export interface CaseStudy {
   testimonial?: string;
   cover_image_url?: string;
   is_published: boolean;
+  // Homepage spotlight (migration 006)
+  featured: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -81,7 +94,10 @@ export interface JobApplication {
   email: string;
   phone?: string;
   linkedin_url?: string;
+  /** @deprecated Use resume_url (Supabase Storage path). Kept for backwards compat. */
   resume_path?: string;
+  /** Canonical Supabase Storage path in the resumes/ bucket (migration 006) */
+  resume_url?: string;
   cover_letter?: string;
   status: "received" | "reviewing" | "interview" | "offer" | "rejected";
   applied_at: string;
@@ -93,6 +109,8 @@ export interface NewsletterSubscriber {
   source?: string;
   is_active: boolean;
   subscribed_at: string;
+  /** Set when user clicks unsubscribe; is_active is also set to false (migration 006) */
+  unsubscribed_at?: string;
 }
 
 export interface AdminProfile {
@@ -101,6 +119,10 @@ export interface AdminProfile {
   role: "super_admin" | "admin" | "editor";
   avatar_url?: string;
   created_at: string;
+  /** Updated by auth trigger on every successful sign-in (migration 006) */
+  last_login_at?: string;
+  /** FALSE = suspended account; middleware denies access (migration 006) */
+  is_active: boolean;
 }
 
 export interface TeamMember {
@@ -154,6 +176,8 @@ export interface NewsroomPost {
   cover_image_url?: string;
   published_at?: string;
   is_published: boolean;
+  /** For media_coverage type: URL of the external article (migration 006) */
+  external_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -178,3 +202,39 @@ export interface AuditLogEntry {
   ip_address?: string;
   created_at: string;
 }
+
+// ============================================
+// Storage Types
+// ============================================
+
+export type StorageBucket =
+  | "public-assets"
+  | "blog-images"
+  | "case-study-assets"
+  | "team-photos"
+  | "resumes";
+
+/** Shape returned by supabase.storage.from(bucket).upload() */
+export interface StorageUploadResult {
+  path: string;
+  fullPath: string;
+  bucket: StorageBucket;
+}
+
+// ============================================
+// API Response Helpers
+// ============================================
+
+export interface ApiSuccess<T> {
+  success: true;
+  data: T;
+  message?: string;
+}
+
+export interface ApiError {
+  success: false;
+  error: string;
+  details?: unknown;
+}
+
+export type ApiResponse<T> = ApiSuccess<T> | ApiError;

@@ -1,4 +1,4 @@
-import { getCaseStudyById } from "@/lib/supabase/admin-queries";
+import { getCaseStudyById, getAdminProfile } from "@/lib/supabase/admin-queries";
 import CaseStudyForm from "@/components/admin/CaseStudyForm";
 import { notFound } from "next/navigation";
 
@@ -14,5 +14,8 @@ export default async function EditCaseStudyPage({
     notFound();
   }
 
-  return <CaseStudyForm caseStudy={caseStudy} />;
+  const profile = await getAdminProfile();
+  const role = profile?.role ?? "admin";
+
+  return <CaseStudyForm caseStudy={caseStudy} adminRole={role} />;
 }

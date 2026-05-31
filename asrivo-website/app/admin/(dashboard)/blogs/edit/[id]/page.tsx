@@ -1,4 +1,4 @@
-import { getBlogPostById } from "@/lib/supabase/admin-queries";
+import { getBlogPostById, getAdminProfile } from "@/lib/supabase/admin-queries";
 import BlogForm from "@/components/admin/BlogForm";
 import { notFound } from "next/navigation";
 
@@ -14,5 +14,8 @@ export default async function EditBlogPostPage({
     notFound();
   }
 
-  return <BlogForm post={post} />;
+  const profile = await getAdminProfile();
+  const role = profile?.role ?? "admin";
+
+  return <BlogForm post={post} adminRole={role} />;
 }

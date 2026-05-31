@@ -29,9 +29,10 @@ import Link from "next/link";
 
 interface CaseStudyFormProps {
   caseStudy?: CaseStudy;
+  adminRole?: string;
 }
 
-export default function CaseStudyForm({ caseStudy }: CaseStudyFormProps) {
+export default function CaseStudyForm({ caseStudy, adminRole = "admin" }: CaseStudyFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
@@ -293,6 +294,7 @@ export default function CaseStudyForm({ caseStudy }: CaseStudyFormProps) {
                   id="is_published"
                   checked={isPublishedValue}
                   onCheckedChange={(checked) => setValue("is_published", checked)}
+                  disabled={adminRole === "editor"}
                 />
               </div>
 

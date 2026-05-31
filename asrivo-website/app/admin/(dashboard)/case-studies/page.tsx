@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getAllCaseStudies } from "@/lib/supabase/admin-queries";
+import { getAllCaseStudies, getAdminProfile } from "@/lib/supabase/admin-queries";
 import CaseStudiesTable from "@/components/admin/CaseStudiesTable";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -10,6 +10,9 @@ export default async function AdminCaseStudiesPage({
 }: {
   searchParams: Promise<{ status?: string; search?: string }>;
 }) {
+  const profile = await getAdminProfile();
+  const role = profile?.role ?? "admin";
+
   const params = await searchParams;
   const cases = await getAllCaseStudies({
     status: params.status,
@@ -35,7 +38,7 @@ export default async function AdminCaseStudiesPage({
       </div>
 
       <Suspense fallback={<CaseStudiesTableSkeleton />}>
-        <CaseStudiesTable cases={cases} />
+        <CaseStudiesTable cases={cases} adminRole={role} />
       </Suspense>
     </div>
   );

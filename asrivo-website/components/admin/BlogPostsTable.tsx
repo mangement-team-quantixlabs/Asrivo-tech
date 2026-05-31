@@ -21,7 +21,13 @@ import {
   Search, MoreHorizontal, Pencil, Trash2, Eye, EyeOff, FileText,
 } from "lucide-react";
 
-export default function BlogPostsTable({ posts }: { posts: BlogPost[] }) {
+export default function BlogPostsTable({
+  posts,
+  adminRole = "admin",
+}: {
+  posts: BlogPost[];
+  adminRole?: string;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -37,6 +43,7 @@ export default function BlogPostsTable({ posts }: { posts: BlogPost[] }) {
   }
 
   function handleTogglePublish(id: string, current: boolean) {
+    if (adminRole === "editor") return;
     startTransition(async () => {
       await toggleBlogPublish(id, !current);
       router.refresh();
@@ -44,6 +51,7 @@ export default function BlogPostsTable({ posts }: { posts: BlogPost[] }) {
   }
 
   function handleDelete(id: string) {
+    if (adminRole === "editor") return;
     if (!confirm("Are you sure you want to delete this post?")) return;
     startTransition(async () => {
       await deleteBlogPost(id);
@@ -136,12 +144,16 @@ export default function BlogPostsTable({ posts }: { posts: BlogPost[] }) {
                             <Pencil className="h-3.5 w-3.5 mr-2" /> Edit
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleTogglePublish(post.id, post.is_published)} disabled={isPending}>
-                          {post.is_published ? <><EyeOff className="h-3.5 w-3.5 mr-2" /> Unpublish</> : <><Eye className="h-3.5 w-3.5 mr-2" /> Publish</>}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDelete(post.id)} className="text-red-600 focus:text-red-600">
-                          <Trash2 className="h-3.5 w-3.5 mr-2" /> Delete
-                        </DropdownMenuItem>
+                        {adminRole !== "editor" && (
+                          <DropdownMenuItem onClick={() => handleTogglePublish(post.id, post.is_published)} disabled={isPending}>
+                            {post.is_published ? <><EyeOff className="h-3.5 w-3.5 mr-2" /> Unpublish</> : <><Eye className="h-3.5 w-3.5 mr-2" /> Publish</>}
+                          </DropdownMenuItem>
+                        )}
+                        {adminRole !== "editor" && (
+                          <DropdownMenuItem onClick={() => handleDelete(post.id)} className="text-red-600 focus:text-red-600">
+                            <Trash2 className="h-3.5 w-3.5 mr-2" /> Delete
+                          </DropdownMenuItem>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

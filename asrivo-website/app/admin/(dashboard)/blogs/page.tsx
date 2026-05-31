@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getAllBlogPosts } from "@/lib/supabase/admin-queries";
+import { getAllBlogPosts, getAdminProfile } from "@/lib/supabase/admin-queries";
 import BlogPostsTable from "@/components/admin/BlogPostsTable";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -10,6 +10,9 @@ export default async function AdminBlogsPage({
 }: {
   searchParams: Promise<{ status?: string; search?: string }>;
 }) {
+  const profile = await getAdminProfile();
+  const role = profile?.role ?? "admin";
+
   const params = await searchParams;
   const posts = await getAllBlogPosts({
     status: params.status,
@@ -35,7 +38,7 @@ export default async function AdminBlogsPage({
       </div>
 
       <Suspense fallback={<BlogsTableSkeleton />}>
-        <BlogPostsTable posts={posts} />
+        <BlogPostsTable posts={posts} adminRole={role} />
       </Suspense>
     </div>
   );

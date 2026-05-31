@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import { getAllNewsletterSubscribers } from "@/lib/supabase/admin-queries";
+import { redirect } from "next/navigation";
+import { getAllNewsletterSubscribers, getAdminProfile } from "@/lib/supabase/admin-queries";
 import SubscribersTable from "@/components/admin/SubscribersTable";
 
 export default async function AdminNewsletterPage({
@@ -7,6 +8,11 @@ export default async function AdminNewsletterPage({
 }: {
   searchParams: Promise<{ search?: string; source?: string }>;
 }) {
+  const profile = await getAdminProfile();
+  if (profile?.role === "editor") {
+    redirect("/admin");
+  }
+
   const params = await searchParams;
   const subscribers = await getAllNewsletterSubscribers({
     search: params.search,

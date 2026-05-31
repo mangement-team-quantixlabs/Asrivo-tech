@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getAllJobListings } from "@/lib/supabase/admin-queries";
+import { getAllJobListings, getAdminProfile } from "@/lib/supabase/admin-queries";
 import JobListingsTable from "@/components/admin/JobListingsTable";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -10,6 +10,9 @@ export default async function AdminJobsPage({
 }: {
   searchParams: Promise<{ status?: string; search?: string }>;
 }) {
+  const profile = await getAdminProfile();
+  const role = profile?.role ?? "admin";
+
   const params = await searchParams;
   const jobs = await getAllJobListings({
     status: params.status,
@@ -35,7 +38,7 @@ export default async function AdminJobsPage({
       </div>
 
       <Suspense fallback={<JobListingsTableSkeleton />}>
-        <JobListingsTable jobs={jobs} />
+        <JobListingsTable jobs={jobs} adminRole={role} />
       </Suspense>
     </div>
   );

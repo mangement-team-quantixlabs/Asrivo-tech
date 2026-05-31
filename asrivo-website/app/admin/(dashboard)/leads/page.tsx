@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import { getAllContactLeads } from "@/lib/supabase/admin-queries";
+import { redirect } from "next/navigation";
+import { getAllContactLeads, getAdminProfile } from "@/lib/supabase/admin-queries";
 import LeadsTable from "@/components/admin/LeadsTable";
 import { Users } from "lucide-react";
 
@@ -8,6 +9,11 @@ export default async function AdminLeadsPage({
 }: {
   searchParams: Promise<{ status?: string; search?: string }>;
 }) {
+  const profile = await getAdminProfile();
+  if (profile?.role === "editor") {
+    redirect("/admin");
+  }
+
   const params = await searchParams;
   const leads = await getAllContactLeads({
     status: params.status,

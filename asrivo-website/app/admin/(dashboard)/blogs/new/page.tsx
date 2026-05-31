@@ -1,5 +1,8 @@
 import BlogForm from "@/components/admin/BlogForm";
+import { getAdminProfile } from "@/lib/supabase/admin-queries";
 
-export default function NewBlogPostPage() {
-  return <BlogForm />;
+export default async function NewBlogPostPage() {
+  const profile = await getAdminProfile();
+  const role = profile?.role ?? "admin";
+  return <BlogForm adminRole={role} />;
 }

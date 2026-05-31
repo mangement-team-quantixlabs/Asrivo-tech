@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import { getJobApplications } from "@/lib/supabase/admin-queries";
+import { redirect } from "next/navigation";
+import { getJobApplications, getAdminProfile } from "@/lib/supabase/admin-queries";
 import ApplicationsTable from "@/components/admin/ApplicationsTable";
 
 export default async function AdminApplicationsPage({
@@ -7,6 +8,11 @@ export default async function AdminApplicationsPage({
 }: {
   searchParams: Promise<{ job_id?: string; status?: string; search?: string }>;
 }) {
+  const profile = await getAdminProfile();
+  if (profile?.role === "editor") {
+    redirect("/admin");
+  }
+
   const params = await searchParams;
   const applications = await getJobApplications({
     job_id: params.job_id,

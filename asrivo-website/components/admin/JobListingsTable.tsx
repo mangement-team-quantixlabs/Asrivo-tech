@@ -21,7 +21,13 @@ import {
   Search, MoreHorizontal, Pencil, Trash2, CheckCircle, XCircle, Briefcase,
 } from "lucide-react";
 
-export default function JobListingsTable({ jobs }: { jobs: JobListing[] }) {
+export default function JobListingsTable({
+  jobs,
+  adminRole = "admin",
+}: {
+  jobs: JobListing[];
+  adminRole?: string;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -37,6 +43,7 @@ export default function JobListingsTable({ jobs }: { jobs: JobListing[] }) {
   }
 
   function handleToggleActive(id: string, current: boolean) {
+    if (adminRole === "editor") return;
     startTransition(async () => {
       await toggleJobActive(id, !current);
       router.refresh();
@@ -44,6 +51,7 @@ export default function JobListingsTable({ jobs }: { jobs: JobListing[] }) {
   }
 
   function handleDelete(id: string) {
+    if (adminRole === "editor") return;
     if (!confirm("Are you sure you want to delete this job listing?")) return;
     startTransition(async () => {
       await deleteJobListing(id);
@@ -140,12 +148,16 @@ export default function JobListingsTable({ jobs }: { jobs: JobListing[] }) {
                             <Pencil className="h-3.5 w-3.5 mr-2" /> Edit Role
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleToggleActive(job.id, job.is_active)} disabled={isPending}>
-                          {job.is_active ? <><XCircle className="h-3.5 w-3.5 mr-2 text-amber-500" /> Close Role</> : <><CheckCircle className="h-3.5 w-3.5 mr-2 text-emerald-500" /> Open Role</>}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDelete(job.id)} className="text-red-600 focus:text-red-600">
-                          <Trash2 className="h-3.5 w-3.5 mr-2" /> Delete
-                        </DropdownMenuItem>
+                        {adminRole !== "editor" && (
+                          <DropdownMenuItem onClick={() => handleToggleActive(job.id, job.is_active)} disabled={isPending}>
+                            {job.is_active ? <><XCircle className="h-3.5 w-3.5 mr-2 text-amber-500" /> Close Role</> : <><CheckCircle className="h-3.5 w-3.5 mr-2 text-emerald-500" /> Open Role</>}
+                          </DropdownMenuItem>
+                        )}
+                        {adminRole !== "editor" && (
+                          <DropdownMenuItem onClick={() => handleDelete(job.id)} className="text-red-600 focus:text-red-600">
+                            <Trash2 className="h-3.5 w-3.5 mr-2" /> Delete
+                          </DropdownMenuItem>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

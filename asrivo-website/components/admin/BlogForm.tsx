@@ -28,9 +28,10 @@ import Link from "next/link";
 
 interface BlogFormProps {
   post?: BlogPost;
+  adminRole?: string;
 }
 
-export default function BlogForm({ post }: BlogFormProps) {
+export default function BlogForm({ post, adminRole = "admin" }: BlogFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
@@ -247,6 +248,7 @@ export default function BlogForm({ post }: BlogFormProps) {
                   id="is_published"
                   checked={isPublishedValue}
                   onCheckedChange={(checked) => setValue("is_published", checked)}
+                  disabled={adminRole === "editor"}
                 />
               </div>
 

@@ -1,0 +1,117 @@
+# supabase/config.toml
+#
+# Supabase CLI local development configuration.
+# Docs: https://supabase.com/docs/guides/cli/config
+#
+# Usage:
+#   supabase start          → start local Supabase (DB + Auth + Storage + Edge Functions)
+#   supabase db reset       → reset DB + run all migrations + seed.sql
+#   supabase db push        → push migrations to remote project
+#   supabase functions serve → run edge functions locally with hot reload
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[api.tls]
+enabled = false
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.pooler]
+enabled = false
+port = 54329
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+[realtime]
+enabled = true
+ip_version = "IPv4"
+# max_header_length = 4096
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+# Opens the Supabase Studio UI at http://localhost:54323
+
+[inbucket]
+enabled = true
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+# Inbucket captures all emails sent during local dev.
+# View at http://localhost:54324
+
+[storage]
+enabled = true
+# 50 MB file size limit for local development
+file_size_limit = "52428800"
+
+[storage.image_transformation]
+enabled = true
+
+[auth]
+enabled = true
+# Local dev site URL — matches Next.js dev server
+site_url = "http://localhost:3000"
+# Allow localhost redirects for OAuth flows
+additional_redirect_urls = [
+  "http://localhost:3000/admin",
+  "http://localhost:3000/admin/callback"
+]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = false          # Admin portal only — no public sign-up
+enable_anonymous_sign_ins = false
+enable_manual_linking = false
+
+[auth.email]
+enable_signup = false
+enable_confirmations = true
+secure_password_change = false
+min_password_length = 8
+# Local dev: skip email sending for magic links/OTP
+otp_length = 6
+otp_expiry = 3600
+
+[auth.sms]
+enable_signup = false
+enable_confirmations = false
+
+[auth.external.google]
+enabled = false               # Enable and set client_id/secret for OAuth
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+inspector_port = 8083
+
+[functions.on-contact-submit]
+verify_jwt = false            # Called by Next.js server with service role key
+
+[functions.on-job-apply]
+verify_jwt = false
+
+[functions.on-newsletter-signup]
+verify_jwt = false
+
+[analytics]
+enabled = false               # Disable locally (requires BigQuery)
+port = 54327
+backend = "postgres"
+
+[experimental]
+orioledb_version = ""
+s3_host = "env(S3_HOST)"
+s3_region = "env(S3_REGION)"
+s3_access_key = "env(S3_ACCESS_KEY)"
+s3_secret_key = "env(S3_SECRET_KEY)"

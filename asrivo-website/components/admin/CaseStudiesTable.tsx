@@ -21,7 +21,13 @@ import {
   Search, MoreHorizontal, Pencil, Trash2, Eye, EyeOff, FolderKanban,
 } from "lucide-react";
 
-export default function CaseStudiesTable({ cases }: { cases: CaseStudy[] }) {
+export default function CaseStudiesTable({
+  cases,
+  adminRole = "admin",
+}: {
+  cases: CaseStudy[];
+  adminRole?: string;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -37,6 +43,7 @@ export default function CaseStudiesTable({ cases }: { cases: CaseStudy[] }) {
   }
 
   function handleTogglePublish(id: string, current: boolean) {
+    if (adminRole === "editor") return;
     startTransition(async () => {
       await toggleCaseStudyPublish(id, !current);
       router.refresh();
@@ -44,6 +51,7 @@ export default function CaseStudiesTable({ cases }: { cases: CaseStudy[] }) {
   }
 
   function handleDelete(id: string) {
+    if (adminRole === "editor") return;
     if (!confirm("Are you sure you want to delete this case study?")) return;
     startTransition(async () => {
       await deleteCaseStudy(id);
@@ -123,8 +131,8 @@ export default function CaseStudiesTable({ cases }: { cases: CaseStudy[] }) {
                       variant="outline"
                       className={`text-[11px] ${
                         cs.is_published
-                          ? "bg-emerald-500/15 text-emerald-700 border-emerald-500/20"
-                          : "bg-amber-500/15 text-amber-700 border-amber-500/20"
+                           ? "bg-emerald-500/15 text-emerald-700 border-emerald-500/20"
+                           : "bg-amber-500/15 text-amber-700 border-amber-500/20"
                       }`}
                     >
                       {cs.is_published ? "Published" : "Draft"}
@@ -144,12 +152,16 @@ export default function CaseStudiesTable({ cases }: { cases: CaseStudy[] }) {
                             <Pencil className="h-3.5 w-3.5 mr-2" /> Edit
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleTogglePublish(cs.id, cs.is_published)} disabled={isPending}>
-                          {cs.is_published ? <><EyeOff className="h-3.5 w-3.5 mr-2" /> Unpublish</> : <><Eye className="h-3.5 w-3.5 mr-2" /> Publish</>}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDelete(cs.id)} className="text-red-600 focus:text-red-600">
-                          <Trash2 className="h-3.5 w-3.5 mr-2" /> Delete
-                        </DropdownMenuItem>
+                        {adminRole !== "editor" && (
+                          <DropdownMenuItem onClick={() => handleTogglePublish(cs.id, cs.is_published)} disabled={isPending}>
+                            {cs.is_published ? <><EyeOff className="h-3.5 w-3.5 mr-2" /> Unpublish</> : <><Eye className="h-3.5 w-3.5 mr-2" /> Publish</>}
+                          </DropdownMenuItem>
+                        )}
+                        {adminRole !== "editor" && (
+                          <DropdownMenuItem onClick={() => handleDelete(cs.id)} className="text-red-600 focus:text-red-600">
+                            <Trash2 className="h-3.5 w-3.5 mr-2" /> Delete
+                          </DropdownMenuItem>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

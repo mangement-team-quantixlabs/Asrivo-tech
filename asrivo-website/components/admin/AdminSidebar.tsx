@@ -111,27 +111,34 @@ export default function AdminSidebar({
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const active = isActive(item.href);
+        {navItems
+          .filter((item) => {
+            if (adminRole === "editor") {
+              return !["/admin/leads", "/admin/newsletter"].includes(item.href);
+            }
+            return true;
+          })
+          .map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item.href);
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={mobile ? onClose : undefined}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
-                active
-                  ? "bg-[var(--sidebar-accent)] text-white shadow-sm"
-                  : "text-slate-400 hover:bg-white/[0.06] hover:text-slate-200"
-              } ${collapsed && !mobile ? "justify-center px-2" : ""}`}
-              title={collapsed && !mobile ? item.label : undefined}
-            >
-              <Icon className={`h-[18px] w-[18px] shrink-0 ${active ? "text-[#00C6BE]" : ""}`} />
-              {(!collapsed || mobile) && <span>{item.label}</span>}
-            </Link>
-          );
-        })}
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={mobile ? onClose : undefined}
+                className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+                  active
+                    ? "bg-[var(--sidebar-accent)] text-white shadow-sm border-l-4 border-l-[#1B4FD8] rounded-r-lg"
+                    : "text-slate-400 hover:bg-white/[0.06] hover:text-slate-200 border-l-4 border-l-transparent rounded-lg"
+                } ${collapsed && !mobile ? "justify-center px-2 border-l-0" : ""}`}
+                title={collapsed && !mobile ? item.label : undefined}
+              >
+                <Icon className={`h-[18px] w-[18px] shrink-0 ${active ? "text-[#00C6BE]" : ""}`} />
+                {(!collapsed || mobile) && <span>{item.label}</span>}
+              </Link>
+            );
+          })}
       </nav>
 
       <Separator className="bg-white/[0.08]" />
