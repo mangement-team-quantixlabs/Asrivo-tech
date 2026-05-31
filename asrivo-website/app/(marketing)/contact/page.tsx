@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Send, CheckCircle, MapPin, Phone, Mail, Clock } from "lucide-react";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import { siteConfig } from "@/lib/constants";
-import { Metadata } from "next";
+import { submitContactForm } from "@/app/actions/contact";
 
 const offices = [
   { city: "San Francisco", address: "100 Innovation Drive, Suite 500, CA 94105", phone: "+1 (800) 123-4567", email: "sf@ascirvo.com" },
@@ -14,15 +14,30 @@ const offices = [
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", company: "", country: "", service_interest: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
-    // TODO: Submit to Supabase contact_leads table
-    await new Promise((r) => setTimeout(r, 1000));
-    setStatus("success");
-    setFormData({ name: "", email: "", phone: "", company: "", country: "", service_interest: "", message: "" });
+    setErrorMsg("");
+
+    try {
+      const fd = new FormData();
+      Object.entries(formData).forEach(([key, val]) => fd.append(key, val));
+      const result = await submitContactForm(fd);
+
+      if (result.success) {
+        setStatus("success");
+        setFormData({ name: "", email: "", phone: "", company: "", country: "", service_interest: "", message: "" });
+      } else {
+        setStatus("error");
+        setErrorMsg(result.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMsg("Network error. Please try again.");
+    }
   };
 
   const inputClass = "h-11 w-full rounded-lg border border-border bg-brand-off-white px-4 text-sm focus:border-brand-electric focus:outline-none focus:ring-2 focus:ring-brand-electric/20";
@@ -92,6 +107,9 @@ export default function ContactPage() {
                 <button type="submit" disabled={status === "loading"} className="inline-flex h-11 items-center gap-2 rounded-full bg-brand-orange px-8 text-sm font-semibold text-white transition-all hover:bg-brand-orange/90 hover:shadow-lg active:scale-[0.98] disabled:opacity-50">
                   {status === "loading" ? <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" /> : <><Send className="h-4 w-4" /> Send Message</>}
                 </button>
+                {status === "error" && errorMsg && (
+                  <p className="mt-3 text-sm text-red-500">{errorMsg}</p>
+                )}
               </form>
             )}
           </div>

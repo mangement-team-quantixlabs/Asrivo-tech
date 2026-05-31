@@ -24,6 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ascirvo.com"),
   title: {
     default: "ASCIRVO — Engineering Tomorrow's Digital Enterprise",
     template: "%s | ASCIRVO",
@@ -80,6 +81,7 @@ export default function RootLayout({
       lang="en"
       className={`${sora.variable} ${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
     >
       <body className="min-h-full flex flex-col">
         <a href="#main-content" className="skip-to-content">

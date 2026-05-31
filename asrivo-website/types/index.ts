@@ -13,6 +13,7 @@ export interface ContactLead {
   country?: string;
   service_interest?: string;
   message?: string;
+  lead_notes?: string;
   status: "new" | "read" | "contacted" | "closed";
   created_at: string;
 }
