@@ -1,0 +1,360 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================
+   ASCIRVO Design System — Brand Tokens
+   ============================================ */
+
+@theme inline {
+  /* Shadcn mappings */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-dm-sans);
+  --font-heading: var(--font-sora);
+  --font-mono: var(--font-geist-mono);
+
+  /* Shadcn semantic colors */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ASCIRVO brand colors */
+  --color-brand-navy: #0A2463;
+  --color-brand-cobalt: #0047AB;
+  --color-brand-electric: #1B4FD8;
+  --color-brand-midnight: #06153A;
+  --color-brand-teal: #00C6BE;
+  --color-brand-orange: #FF6B35;
+  --color-brand-off-white: #F7F9FC;
+  --color-brand-gray-100: #EEF2F7;
+  --color-brand-gray-400: #9CA3AF;
+  --color-brand-gray-700: #374151;
+  --color-brand-black: #0B0E13;
+  --color-brand-success: #22C55E;
+  --color-brand-warning: #F59E0B;
+  --color-brand-danger: #EF4444;
+
+  /* Theme Refactor Colors */
+  --color-theme-lavender: #C1BFFF;
+  --color-theme-navy: #0A1931;
+  --color-theme-slate: #434343;
+  --color-theme-teal: #00E5FF;
+  --color-theme-orange: #FF7A45;
+  --color-theme-cyan: #E6FFFB;
+}
+
+/* ---- Light Mode (ASCIRVO Brand) ---- */
+:root {
+  --font-sora: "Sora", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-dm-sans: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-geist-mono: "JetBrains Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  --background: #FFFFFF;
+  --foreground: #0B0E13;
+  --card: #FFFFFF;
+  --card-foreground: #0B0E13;
+  --popover: #FFFFFF;
+  --popover-foreground: #0B0E13;
+  --primary: #0A2463;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F7F9FC;
+  --secondary-foreground: #0A2463;
+  --muted: #EEF2F7;
+  --muted-foreground: #374151;
+  --accent: #00C6BE;
+  --accent-foreground: #FFFFFF;
+  --destructive: #EF4444;
+  --border: #EEF2F7;
+  --input: #EEF2F7;
+  --ring: #1B4FD8;
+  --chart-1: #0A2463;
+  --chart-2: #1B4FD8;
+  --chart-3: #00C6BE;
+  --chart-4: #FF6B35;
+  --chart-5: #22C55E;
+  --radius: 0.75rem;
+  --sidebar: #0A2463;
+  --sidebar-foreground: #CBD5E1;
+  --sidebar-primary: #1B4FD8;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #06153A;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: rgba(255,255,255,0.1);
+  --sidebar-ring: #1B4FD8;
+}
+
+/* ---- Dark Mode ---- */
+.dark {
+  --background: #0B0E13;
+  --foreground: #F7F9FC;
+  --card: #111827;
+  --card-foreground: #F7F9FC;
+  --popover: #111827;
+  --popover-foreground: #F7F9FC;
+  --primary: #1B4FD8;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1E293B;
+  --secondary-foreground: #F7F9FC;
+  --muted: #1E293B;
+  --muted-foreground: #9CA3AF;
+  --accent: #00C6BE;
+  --accent-foreground: #0B0E13;
+  --destructive: #EF4444;
+  --border: rgba(255,255,255,0.08);
+  --input: rgba(255,255,255,0.12);
+  --ring: #1B4FD8;
+  --chart-1: #1B4FD8;
+  --chart-2: #00C6BE;
+  --chart-3: #FF6B35;
+  --chart-4: #22C55E;
+  --chart-5: #F59E0B;
+  --sidebar: #06153A;
+  --sidebar-foreground: #CBD5E1;
+  --sidebar-primary: #1B4FD8;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #0A2463;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: rgba(255,255,255,0.06);
+  --sidebar-ring: #1B4FD8;
+}
+
+/* ============================================
+   Global Base Styles
+   ============================================ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Headings use Sora */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sora), var(--font-dm-sans), sans-serif;
+  }
+
+  /* Accessibility: Skip to content */
+  .skip-to-content {
+    @apply absolute -top-10 left-4 z-[9999] rounded-md bg-brand-navy px-4 py-2 text-sm font-medium text-white transition-all focus:top-4;
+  }
+
+  /* Selection color */
+  ::selection {
+    background-color: rgba(27, 79, 216, 0.2);
+    color: #0A2463;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #9CA3AF;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #374151;
+  }
+}
+
+/* ============================================
+   Utility Animations
+   ============================================ */
+
+@layer utilities {
+  /* Fade in up on scroll */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* Slide in from left */
+  .animate-slide-in-left {
+    animation: slideInLeft 0.4s ease-out forwards;
+  }
+
+  /* Slide in from right */
+  .animate-slide-in-right {
+    animation: slideInRight 0.4s ease-out forwards;
+  }
+
+  /* Infinite marquee scroll */
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+  .animate-marquee-reverse {
+    animation: marquee-reverse 40s linear infinite;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-navy via-brand-electric to-brand-teal bg-clip-text text-transparent;
+  }
+
+  /* Glass morphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+  .dark .glass {
+    background: rgba(11, 14, 19, 0.8);
+  }
+
+  /* Card hover lift */
+  .card-hover {
+    @apply transition-all duration-300;
+  }
+  .card-hover:hover {
+    @apply -translate-y-1 shadow-xl;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* ============================================
+   Skeleton / Shimmer System
+   GPU-only: animates transform, never layout props
+   ============================================ */
+
+@keyframes skeleton-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@layer utilities {
+  /* Base skeleton block — apply to any placeholder element */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: #EEF2F7; /* brand-gray-100 */
+    border-radius: 0.375rem;
+  }
+
+  /* The travelling shimmer overlay */
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0)   0%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0)   100%
+    );
+    transform: translateX(-100%);
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+    will-change: transform; /* hint to compositor for hardware acceleration */
+  }
+
+  /* Dark-mode override */
+  .dark .skeleton {
+    background-color: #1E293B;
+  }
+  .dark .skeleton::after {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0)    0%,
+      rgba(255, 255, 255, 0.07) 50%,
+      rgba(255, 255, 255, 0)    100%
+    );
+  }
+
+  /* Respect OS reduced-motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton::after {
+      animation: none;
+    }
+  }
+}
