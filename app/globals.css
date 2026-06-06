@@ -1,15 +1,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* stylelint-disable */
 
-@custom-variant dark (&:is(.dark *));
+
 
 /* ============================================
    ASCIRVO Design System — Brand Tokens
    ============================================ */
 
-@theme inline {
+
   /* Shadcn mappings */
+  :root {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-dm-sans);
@@ -64,25 +66,26 @@
   --color-brand-teal: #00C6BE;
   --color-brand-orange: #FF6B35;
   --color-brand-off-white: #F7F9FC;
-  --color-brand-gray-100: #EEF2F7;
-  --color-brand-gray-400: #9CA3AF;
-  --color-brand-gray-700: #374151;
-  --color-brand-black: #0B0E13;
-  --color-brand-success: #22C55E;
-  --color-brand-warning: #F59E0B;
-  --color-brand-danger: #EF4444;
-
-  /* Theme Refactor Colors */
-  --color-theme-lavender: #C1BFFF;
-  --color-theme-navy: #0A1931;
-  --color-theme-slate: #434343;
-  --color-theme-teal: #00E5FF;
-  --color-theme-orange: #FF7A45;
-  --color-theme-cyan: #E6FFFB;
 }
+
 
 /* ---- Light Mode (ASCIRVO Brand) ---- */
 :root {
+   --color-brand-gray-100: #EEF2F7;
+   --color-brand-gray-400: #9CA3AF;
+   --color-brand-gray-700: #374151;
+   --color-brand-black: #0B0E13;
+   --color-brand-success: #22C55E;
+   --color-brand-warning: #F59E0B;
+   --color-brand-danger: #EF4444;
+
+   /* Theme Refactor Colors */
+   --color-theme-lavender: #C1BFFF;
+   --color-theme-navy: #0A1931;
+   --color-theme-slate: #434343;
+   --color-theme-teal: #00E5FF;
+   --color-theme-orange: #FF7A45;
+   --color-theme-cyan: #E6FFFB;
   --font-sora: "Sora", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-dm-sans: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-geist-mono: "JetBrains Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
@@ -161,7 +164,8 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: color-mix(in srgb, var(--ring) 50%, transparent);
   }
 
   html {
@@ -171,7 +175,9 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
   }
 
   /* Headings use Sora */
@@ -181,7 +187,21 @@
 
   /* Accessibility: Skip to content */
   .skip-to-content {
-    @apply absolute -top-10 left-4 z-[9999] rounded-md bg-brand-navy px-4 py-2 text-sm font-medium text-white transition-all focus:top-4;
+    position: absolute;
+    top: -2.5rem;
+    left: 1rem;
+    z-index: 9999;
+    border-radius: 0.375rem;
+    background-color: var(--color-brand-navy);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    color: #ffffff;
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .skip-to-content:focus {
+    top: 1rem;
   }
 
   /* Selection color */
@@ -238,7 +258,10 @@
 
   /* Gradient text */
   .text-gradient {
-    @apply bg-gradient-to-r from-brand-navy via-brand-electric to-brand-teal bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, var(--color-brand-navy), var(--color-brand-electric), var(--color-brand-teal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   /* Glass morphism */
@@ -253,10 +276,11 @@
 
   /* Card hover lift */
   .card-hover {
-    @apply transition-all duration-300;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
   .card-hover:hover {
-    @apply -translate-y-1 shadow-xl;
+    transform: translateY(-0.25rem);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 }
 

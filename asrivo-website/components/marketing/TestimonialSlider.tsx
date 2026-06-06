@@ -70,7 +70,7 @@ export default function TestimonialSlider({
 
       {/* Testimonial content */}
       <div className="relative min-h-[200px] overflow-hidden">
-        <AnimatePresence custom={direction} mode="wait">
+        <AnimatePresence custom={direction} mode="sync">
           <motion.div
             key={current}
             custom={direction}

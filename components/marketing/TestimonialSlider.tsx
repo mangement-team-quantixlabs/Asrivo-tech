@@ -281,7 +281,7 @@ export default function TestimonialSlider({
         className="relative overflow-hidden"
         style={{ minHeight: "clamp(220px, 30vw, 280px)" }}
       >
-        <AnimatePresence mode={anim.mode}>
+        <AnimatePresence mode="sync">
           <motion.div
             key={current}
             initial={anim.enter}
