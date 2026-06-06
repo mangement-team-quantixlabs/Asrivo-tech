@@ -69,4 +69,12 @@ jobs:
             docker pull "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
             docker stop asrivo-website || true
             docker rm asrivo-website || true
-            docker run -d --name asrivo-website -p 3000:3000 "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
+            docker run -d --name asrivo-website -p 3000:3000 \
+  -e NEXT_PUBLIC_SUPABASE_URL="${{ secrets.https://blletfgklgpjggmfvetd.supabase.co }}" \
+  -e NEXT_PUBLIC_SUPABASE_ANON_KEY="${{ secrets.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsbGV0ZmdrbGdwamdnbWZ2ZXRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODk4NDQsImV4cCI6MjA5NDc2NTg0NH0.WQBxg8sJIEh_hAHUfL8Mh1mtej3HEgC2lytRIgUcne4 }}" \
+  "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
+
+
+
+
+  
