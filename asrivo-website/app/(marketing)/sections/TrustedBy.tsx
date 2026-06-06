@@ -1,18 +1,18 @@
 import MarqueeStrip from "@/components/marketing/MarqueeStrip";
 
 const trustedCompanies = [
-  { name: "TechCorp" },
-  { name: "GlobalBank" },
-  { name: "HealthPlus" },
-  { name: "RetailMax" },
-  { name: "EnergyOne" },
-  { name: "CloudFirst" },
-  { name: "DataVault" },
-  { name: "CyberShield" },
-  { name: "FinanceHub" },
-  { name: "MedTech" },
-  { name: "SmartGrid" },
-  { name: "DigiServe" },
+  { name: "Accenture" },
+  { name: "Deloitte" },
+  { name: "JPMorgan Chase" },
+  { name: "Siemens" },
+  { name: "Unilever" },
+  { name: "HSBC" },
+  { name: "Philips" },
+  { name: "SAP" },
+  { name: "Bosch" },
+  { name: "Schneider Electric" },
+  { name: "Tata Consultancy" },
+  { name: "Infosys" },
 ];
 
 export default function TrustedBy() {
