@@ -72,10 +72,8 @@ jobs:
             docker stop asrivo-website || true
             docker rm asrivo-website || true
             docker run -d --name asrivo-website -p 3000:3000 \
-  -e NEXT_PUBLIC_SUPABASE_URL="${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" \
-  -e NEXT_PUBLIC_SUPABASE_ANON_KEY="${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" \
-  "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
-
+  -e NEXT_PUBLIC_SUPABASE_URL="$NEXT_PUBLIC_SUPABASE_URL" \
+  -e NEXT_PUBLIC_SUPABASE_ANON_KEY="$NEXT_PUBLIC_SUPABASE_ANON_KEY" \
 
 
   
