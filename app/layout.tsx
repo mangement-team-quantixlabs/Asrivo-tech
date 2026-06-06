@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import QueryClientProviderWrapper from '@/components/QueryClientProviderWrapper';
 import { Sora, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -85,7 +86,9 @@ export default function RootLayout({
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
-        {children}
+        <QueryClientProviderWrapper>
+          {children}
+        </QueryClientProviderWrapper>
       </body>
     </html>
   );
