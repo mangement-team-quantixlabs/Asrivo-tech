@@ -6,4 +6,4 @@ export async function GET() {
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
     });
-}git checkout karthik
+}
