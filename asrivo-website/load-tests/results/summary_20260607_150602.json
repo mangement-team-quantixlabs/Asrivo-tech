@@ -1,0 +1,17 @@
+{
+  "generated": "2026-06-07T15:06:48.096689",
+  "results": [
+    {
+      "scenario": "Spike Test",
+      "duration_s": 45.66,
+      "total_requests": 2880,
+      "failures": 10,
+      "failure_rate_pct": 0.35,
+      "avg_latency_ms": 1075.1,
+      "p95_latency_ms": 1771.0,
+      "p99_latency_ms": 1796.9,
+      "rps": 63.1,
+      "status": "PASS"
+    }
+  ]
+}

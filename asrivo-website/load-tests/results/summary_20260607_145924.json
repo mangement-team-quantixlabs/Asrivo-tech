@@ -1,0 +1,17 @@
+{
+  "generated": "2026-06-07T15:01:25.076025",
+  "results": [
+    {
+      "scenario": "Soak Test",
+      "duration_s": 120.25,
+      "total_requests": 2775,
+      "failures": 0,
+      "failure_rate_pct": 0.0,
+      "avg_latency_ms": 329.8,
+      "p95_latency_ms": 487.4,
+      "p99_latency_ms": 1120.9,
+      "rps": 23.1,
+      "status": "PASS"
+    }
+  ]
+}
