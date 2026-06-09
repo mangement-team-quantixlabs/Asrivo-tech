@@ -1,0 +1,17 @@
+{
+  "generated": "2026-06-07T15:26:46.855172",
+  "results": [
+    {
+      "scenario": "DB Bottleneck",
+      "duration_s": 8.45,
+      "total_requests": 205,
+      "failures": 7,
+      "failure_rate_pct": 3.41,
+      "avg_latency_ms": 513.8,
+      "p95_latency_ms": 1088.2,
+      "p99_latency_ms": 1095.7,
+      "rps": 24.3,
+      "status": "FAIL"
+    }
+  ]
+}

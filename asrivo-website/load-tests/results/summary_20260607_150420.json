@@ -1,0 +1,17 @@
+{
+  "generated": "2026-06-07T15:05:36.450845",
+  "results": [
+    {
+      "scenario": "Breakpoint Test",
+      "duration_s": 75.48,
+      "total_requests": 6650,
+      "failures": 0,
+      "failure_rate_pct": 0.0,
+      "avg_latency_ms": 1581.5,
+      "p95_latency_ms": 3111.5,
+      "p99_latency_ms": 3595.9,
+      "rps": 88.1,
+      "status": "PASS"
+    }
+  ]
+}
