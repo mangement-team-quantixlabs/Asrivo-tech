@@ -1,7 +1,6 @@
-import { getJobListingById, getAdminProfile } from "@/lib/supabase/admin-queries";
+import { getJobListingById } from "@/lib/supabase/admin-queries";
 import JobListingForm from "@/components/admin/JobListingForm";
 import { notFound } from "next/navigation";
-
 export default async function EditJobListingPage({
   params,
 }: {
@@ -9,13 +8,8 @@ export default async function EditJobListingPage({
 }) {
   const { id } = await params;
   const job = await getJobListingById(id);
-
   if (!job) {
     notFound();
   }
-
-  const profile = await getAdminProfile();
-  const role = profile?.role ?? "admin";
-
-  return <JobListingForm job={job} adminRole={role} />;
+  return <JobListingForm job={job} />;
 }
