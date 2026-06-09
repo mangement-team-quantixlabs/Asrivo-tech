@@ -16,7 +16,10 @@ jobs:
           node-version: '20'
       - name: Install dependencies
         working-directory: ./asrivo-website
-        run: npm install
+        run: |
+          rm -f package-lock.json
+          npm install
+          npm install lightningcss-linux-x64-gnu
       - name: Build Next.js app
         working-directory: ./asrivo-website
         run: npm run build
