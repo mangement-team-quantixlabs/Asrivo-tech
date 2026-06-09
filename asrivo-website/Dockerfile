@@ -1,6 +1,5 @@
-FROM node:20-alpine AS builder
+FROM node:20 AS builder
 WORKDIR /app
-RUN apk add --no-cache libc6-compat
 COPY package*.json ./
 RUN rm -f package-lock.json && npm install
 COPY . .
@@ -10,9 +9,8 @@ ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 RUN npm run build
 
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
-RUN apk add --no-cache libc6-compat
 ENV NODE_ENV=production
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
