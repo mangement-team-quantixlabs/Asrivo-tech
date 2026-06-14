@@ -46,3 +46,6 @@ next-env.d.ts
 
 # backup
 .git_backup/
+
+# production keys
+asrivo-production-key*

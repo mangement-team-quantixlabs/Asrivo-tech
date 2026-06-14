@@ -48,22 +48,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  allowedDevOrigins: [
-    // Current machine LAN IP (update this if your router assigns a new IP)
-    "10.107.82.150",
-    "10.107.82.150:3000",
-    "10.107.82.150:3001",
-    // Loopback aliases
-    "localhost",
-    "localhost:3000",
-    "localhost:3001",
-    "127.0.0.1",
-    "127.0.0.1:3000",
-    "127.0.0.1:3001",
-    // Legacy / previous IPs (kept for reference, harmless)
-    "10.244.169.150",
-    "10.244.169.150:3000",
-  ],
 };
 
 export default nextConfig;
